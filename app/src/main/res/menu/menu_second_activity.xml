@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_edit"
+        android:title="Edit"
+        android:icon="@drawable/bpm"
+        app:showAsAction="always"
+        android:orderInCategory="1" />
+    <item
+        android:id="@+id/action_record"
+        android:title="Начать запись"
+        android:icon="@drawable/ic_record"
+        app:showAsAction="always"
+        android:orderInCategory="2" />
+
+    <!-- Кнопка паузы -->
+    <item
+        android:id="@+id/action_pause"
+        android:title="Пауза"
+        android:icon="@drawable/ic_pause"
+        app:showAsAction="always"
+        android:orderInCategory="3" />
+
+    <!-- Кнопка остановки -->
+    <item
+        android:id="@+id/action_stop"
+        android:title="Остановить"
+        android:icon="@drawable/ic_stop"
+        app:showAsAction="always"
+        android:orderInCategory="4" />
+    <item
+        android:id="@+id/action_clear"
+        android:title="Очистить"
+        android:icon="@drawable/ic_clear"
+    app:showAsAction="always"
+    android:orderInCategory="5" />
+
+</menu>

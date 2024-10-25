@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    android:orientation="vertical"
+    tools:context=".repository.LoginActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        android:alpha="0.93">
+        <View
+            android:id="@+id/dimView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#80000000"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="28dp"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                >
+            </ImageView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="OnTheWay"
+                android:textStyle="bold"
+                android:fontFamily="sans-serif-condensed-medium"
+                android:textSize="32sp"
+                android:textColor="@color/white">
+            </TextView>
+
+        </LinearLayout>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="@color/white"
+            app:cardCornerRadius="32dp"
+            android:id="@+id/cardView">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="28dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="С возвращением!"
+
+                    android:textSize="32sp"
+                    android:textStyle="bold"></TextView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Пожалуйста, войдите в аккаунт чтобы продолжить"
+                    android:alpha="0.7"></TextView>
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"></View>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Email или логин"
+                    android:alpha="0.7"
+                    android:textStyle="bold"></TextView>
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:id="@+id/emailEditText"></EditText>
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="15dp"></View>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Пароль"
+                    android:alpha="0.7"
+                    android:textStyle="bold"></TextView>
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPassword"
+
+                    android:id="@+id/passwordEditText"></EditText>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <CheckBox
+                        android:id="@+id/rememberMeCheckBox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Запомнить меня"
+                        android:alpha="0.7"
+                        android:gravity="center"></CheckBox>
+
+                    <TextView
+                        android:layout_width="150dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="60dp"
+                        android:text="Забыли пароль?"
+                        android:id="@+id/rememberPassword"
+                        android:gravity="center">
+                    </TextView>
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/errorTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:visibility="gone"
+                        android:gravity="center">
+
+                    </TextView>
+                </LinearLayout>
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"></View>
+
+                <com.google.android.material.button.MaterialButton
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:text="Войти"
+                    app:cornerRadius="36dp"
+                    android:onClick="onClickLogin"></com.google.android.material.button.MaterialButton>
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="10dp"></View>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Еще не зарегистрированы? Зарегистрироваться"
+                    android:layout_gravity="center"
+                    android:alpha="0.7"
+                    android:onClick="onClickGoToRegistration"></TextView>
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="10dp"></View>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Войти с помощью"
+                    android:layout_gravity="center"
+                    android:alpha="0.7"></TextView>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_margin="12dp"
+                        >
+                    </ImageView>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+    </RelativeLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
