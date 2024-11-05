@@ -8,7 +8,7 @@ import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.CheckBox;
+
 import android.widget.EditText;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
@@ -56,7 +56,6 @@ public class LoginActivity extends AppCompatActivity {
 
         passwordEditText.setOnTouchListener((v, event) -> {
             final int DRAWABLE_END = 2;
-
             if (event.getAction() == MotionEvent.ACTION_UP) {
                 if (event.getRawX() >= (passwordEditText.getRight() - passwordEditText.getCompoundDrawables()[DRAWABLE_END].getBounds().width())) {
                     togglePasswordVisibility();
@@ -83,7 +82,7 @@ public class LoginActivity extends AppCompatActivity {
                     Log.d("Authorization", "Пользователь автоматически авторизован: " + user.getEmail());
 
                     // Переход на MainActivity
-                    Intent intent = new Intent(Authorization.this, MainActivity.class);
+                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     startActivity(intent);
                     finish();
                 })
