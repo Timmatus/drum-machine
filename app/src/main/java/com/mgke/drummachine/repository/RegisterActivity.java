@@ -41,10 +41,10 @@ public class RegisterActivity extends AppCompatActivity {
         loginTextView = findViewById(R.id.login_texview);
 
         registerButton.setOnClickListener(this::onClickRegistration);
-//        loginTextView.setOnClickListener(v -> {
-//            Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
-//            startActivity(intent);
-//        });
+        loginTextView.setOnClickListener(v -> {
+        Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+         startActivity(intent);
+       });
     }
 
     public void onClickRegistration(View view) {
