@@ -16,10 +16,10 @@
         android:theme="@style/Theme.DrumMachine"
         tools:targetApi="31">
         <activity
-            android:name=".RegisterActivity"
+            android:name=".repository.LoginActivity"
             android:exported="false" />
         <activity
-            android:name=".repository.LoginActivity"
+            android:name=".RegisterActivity"
             android:exported="false" />
         <activity
             android:name=".SecondActivity"
