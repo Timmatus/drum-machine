@@ -2,8 +2,7 @@ package com.mgke.drummachine.repository;
 
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+
 import com.mgke.drummachine.model.User;
 
 import java.util.concurrent.CompletableFuture;
