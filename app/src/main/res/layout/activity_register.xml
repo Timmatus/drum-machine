@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-
     android:orientation="vertical"
     tools:context=".repository.RegisterActivity">
 
@@ -13,34 +12,25 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/back_btn"
-
+        android:src="@drawable/ic_back"
         android:backgroundTint="@color/white"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginStart="14dp"
         android:layout_marginTop="24dp"/>
 
-    <ImageView
-        android:id="@+id/imageView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="34dp"
-
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <TextView
         android:id="@+id/login_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
         android:text="Sign up"
         android:textSize="30sp"
-        android:layout_marginStart="55dp"
-        android:layout_marginTop="34dp"
+        android:layout_marginTop="134dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView3" />
+
+        android:gravity="center"/>
 
 
     <LinearLayout
@@ -51,20 +41,17 @@
         android:layout_marginTop="34dp"
         app:layout_constraintTop_toBottomOf="@id/login_title"
         app:layout_constraintStart_toStartOf="parent"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent">
 
-        <ImageView
-            android:id="@+id/icon_username"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical" />
+
 
         <EditText
             android:id="@+id/username_et"
             android:layout_width="242dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="9dp"
-
+            android:drawableStart="@drawable/ic_username"
             android:hint="UserName"
             />
 
@@ -77,21 +64,16 @@
         android:layout_marginStart="50dp"
         app:layout_constraintTop_toBottomOf="@id/username_lin"
         app:layout_constraintStart_toStartOf="parent"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent">
 
-        <ImageView
-            android:id="@+id/icon_email"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
-            android:layout_gravity="center_vertical" />
 
         <EditText
             android:id="@+id/email_et"
             android:layout_width="242dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="9dp"
-
+            android:drawableStart="@drawable/ic_email"
             android:hint="Email"
             />
 
@@ -105,10 +87,10 @@
         android:layout_height="wrap_content"
         android:id="@+id/password_lin"
         android:layout_marginStart="50dp"
-        android:layout_marginTop="15dp"
         app:layout_constraintTop_toBottomOf="@id/email_lin"
         app:layout_constraintStart_toStartOf="parent"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent">
 
         <ImageView
             android:id="@+id/icon_password"
@@ -123,7 +105,7 @@
             android:layout_width="242dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="9dp"
-
+            android:drawableStart="@drawable/ic_password"
             android:hint="Password"
             android:inputType="textPassword"
             />
@@ -133,12 +115,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/login_text"
-        android:layout_marginStart="50dp"
+
         android:layout_marginTop="15dp"
         app:layout_constraintTop_toBottomOf="@id/sign_up_btn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-
         android:orientation="horizontal">
 
         <TextView
@@ -149,7 +130,7 @@
 </LinearLayout>
     <Button
         android:id="@+id/sign_up_btn"
-        android:layout_width="268dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
 
