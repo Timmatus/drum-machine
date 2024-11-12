@@ -1,6 +1,7 @@
 package com.mgke.drummachine.repository;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -15,6 +16,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.mgke.drummachine.MainActivity;
 import com.mgke.drummachine.R;
+import com.mgke.drummachine.UserProfileActivity;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -44,7 +46,12 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-
+    private void saveUserId(String userId) {
+        SharedPreferences prefs = getSharedPreferences("UserSession", MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString("userId", userId);
+        editor.apply();
+    }
 
     private void onLoginClicked(View view) {
         String email = emailEditText.getText().toString().trim();
@@ -55,10 +62,12 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
+        // Поиск пользователя и сохранение его ID после успешного входа
         userRepository.getUserByEmail(email, password)
                 .thenAccept(user -> {
                     if (user != null) {
-                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        saveUserId(user.id); // Сохранение ID пользователя
+                        Intent intent = new Intent(LoginActivity.this, UserProfileActivity.class);
                         startActivity(intent);
                         finish();
                     } else {

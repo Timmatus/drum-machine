@@ -20,45 +20,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Настройка Toolbar
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
-        // Инициализация массива MediaPlayer
-        mediaPlayers = new MediaPlayer[6];
-
-        // Инициализация кнопок
-        Button button1 = findViewById(R.id.button1);
-        Button button2 = findViewById(R.id.button2);
-        Button button3 = findViewById(R.id.button3);
-        Button button4 = findViewById(R.id.button4);
-        Button button5 = findViewById(R.id.button5);
-        Button button6 = findViewById(R.id.button6);
-
-        // Установка слушателей для кнопок
-        button1.setOnClickListener(v -> playSound(0, R.raw.sound1));
-        button2.setOnClickListener(v -> playSound(1, R.raw.sound2));
-        button3.setOnClickListener(v -> playSound(2, R.raw.sound3));
-        button4.setOnClickListener(v -> playSound(3, R.raw.sound4));
-        button5.setOnClickListener(v -> playSound(4, R.raw.sound5));
-        button6.setOnClickListener(v -> playSound(5, R.raw.sound6));
     }
 
-    private void playSound(int index, int soundResource) {
-        // Если уже существует MediaPlayer для данной кнопки, остановите и освободите его
-        if (mediaPlayers[index] != null) {
-            mediaPlayers[index].stop();
-            mediaPlayers[index].release();
-        }
 
-        // Создание нового объекта MediaPlayer
-        mediaPlayers[index] = MediaPlayer.create(this, soundResource);
-        mediaPlayers[index].setOnCompletionListener(mp -> {
-            mp.release(); // Освобождение ресурсов после завершения
-            mediaPlayers[index] = null; // Установить на null для дальнейшего использования
-        });
-        mediaPlayers[index].start(); // Запуск воспроизведения
-    }
 
     @Override
     protected void onDestroy() {
