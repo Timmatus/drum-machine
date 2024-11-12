@@ -17,7 +17,9 @@ public class UserRepository {
         CompletableFuture<Boolean> future = new CompletableFuture<>();
 
         String userID = userCollection.document().getId();
-        User user = new User(userID, username, password, email);
+        String avatarUrl = null;
+
+        User user = new User(userID, username, password, email, avatarUrl);
 
         userCollection.document(userID).set(user)
                 .addOnSuccessListener(aVoid -> future.complete(true))

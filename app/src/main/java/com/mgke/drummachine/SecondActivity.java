@@ -2,6 +2,7 @@ package com.mgke.drummachine;
 
 import android.content.Intent;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -21,6 +22,11 @@ import android.os.Build;
 import android.os.Environment;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+
+import com.mgke.drummachine.model.Sound;
+import com.mgke.drummachine.repository.SoundRepository;
+
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.UUID;
@@ -44,16 +50,20 @@ public class SecondActivity extends AppCompatActivity {
     private boolean isPlaying = true;
     private int bpm = 180; // Начальное значение BPM
     private Runnable highlightRunnable;
+    private SoundRepository soundRepository;
+    private CloudinaryUploadSound cloudinaryUploadSound;
+    private Uri soundUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_second);
         requestPermissions();
-        // Настройка Toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        soundRepository = new SoundRepository();
+        cloudinaryUploadSound = new CloudinaryUploadSound(this);
 
         // Инициализация массива MediaPlayer
         mediaPlayers = new MediaPlayer[6];
@@ -136,9 +146,57 @@ public class SecondActivity extends AppCompatActivity {
             }
         };
 
-        // Запуск цикла сразу после инициализации
         handler.post(highlightRunnable);
     }
+
+    private void uploadSoundToCloudinary(Uri soundUri, String soundName) {
+        cloudinaryUploadSound.uploadSound(soundUri, soundName, new CloudinaryUploadSound.UploadCallback() {
+            @Override
+            public void onSuccess(String soundUrl) {
+                saveSoundToFirestore(soundUrl, soundName);
+            }
+
+            @Override
+            public void onFailure(String error) {
+                // Обработка ошибки
+                Toast.makeText(SecondActivity.this, "Ошибка загрузки: " + error, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void saveSoundToFirestore(String soundUrl, String soundName) {
+        Sound sound = new Sound();
+        sound.setSoundName(soundName);
+        sound.setSoundUrl(soundUrl);
+
+        soundRepository.saveSound(sound).thenAccept(success -> {
+            if (success) {
+                Toast.makeText(this, "Звук успешно сохранен!", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "Не удалось сохранить звук", Toast.LENGTH_SHORT).show();
+            }
+        }).exceptionally(e -> {
+            Toast.makeText(this, "Ошибка: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            return null;
+        });
+    }
+
+    // Обработка события выбора файла для загрузки
+    public void onChooseSoundFileClick() {
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType("audio/*");
+        startActivityForResult(intent, 1001); // 1001 - код запроса для выбора файла
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1001 && resultCode == RESULT_OK && data != null) {
+            soundUri = data.getData(); // Получаем URI выбранного звукового файла
+            uploadSoundToCloudinary(soundUri, "new_sound_name"); // Загрузка на Cloudinary
+        }
+    }
+
 
     private void resetBpmHighlight(LinearLayout layoutBpmValues, int selectedIndex) {
         for (int i = 0; i < layoutBpmValues.getChildCount(); i++) {
@@ -176,31 +234,34 @@ public class SecondActivity extends AppCompatActivity {
 
     private int getSoundResource(int index) {
         switch (index) {
-            case 0: return R.raw.sound1;
-            case 1: return R.raw.sound2;
-            case 2: return R.raw.sound3;
-            case 3: return R.raw.sound4;
-            case 4: return R.raw.sound5;
-            case 5: return R.raw.sound6;
-            default: return -1;
+            case 0:
+                return R.raw.sound1;
+            case 1:
+                return R.raw.sound2;
+            case 2:
+                return R.raw.sound3;
+            case 3:
+                return R.raw.sound4;
+            case 4:
+                return R.raw.sound5;
+            case 5:
+                return R.raw.sound6;
+            default:
+                return -1;
         }
     }
 
-    // Метод для начала записи
     private void startRecording() {
         if (mediaRecorder == null) {
             mediaRecorder = new MediaRecorder();
         }
 
         try {
-            // Установка параметров записи
             mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
             mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
             mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
 
-            // Создание уникального имени файла для записи
-            recordingFilePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
-                    + "/test_recording.mp4";
+            String recordingFilePath = getExternalCacheDir().getAbsolutePath() + "/" + UUID.randomUUID().toString() + ".mp4";
             mediaRecorder.setOutputFile(recordingFilePath);
 
             mediaRecorder.prepare();
@@ -230,14 +291,19 @@ public class SecondActivity extends AppCompatActivity {
         }
     }
 
-    // Метод для остановки записи
     private void stopRecording() {
         if (mediaRecorder != null) {
             mediaRecorder.stop();
             mediaRecorder.release();
             mediaRecorder = null;
             isRecordingPaused = false;
-            Toast.makeText(this, "Recording saved to: " + recordingFilePath, Toast.LENGTH_LONG).show();
+
+            // Запуск загрузки файла на Cloudinary
+            File recordedFile = new File(recordingFilePath);
+            Uri soundUri = Uri.fromFile(recordedFile);
+            uploadSoundToCloudinary(soundUri, "recorded_sound_" + UUID.randomUUID().toString());
+
+            Toast.makeText(this, "Recording saved and uploading...", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -301,28 +367,23 @@ public class SecondActivity extends AppCompatActivity {
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
             return true;
-        }
-        if (id == R.id.action_record) {
-
+        } else if (id == R.id.action_record) {
             startRecording();
             return true;
-        }
-        if (id == R.id.action_pause) {
-
+        } else if (id == R.id.action_pause) {
             pauseRecording();
             return true;
-        }
-        if (id == R.id.action_stop) {
-
+        } else if (id == R.id.action_stop) {
             stopRecording();
             return true;
-        }
-        if (id == R.id.action_clear) {
+        } else if (id == R.id.action_clear) {
             // Очистка активных кнопок в GridView1
             buttonGridAdapter.setActiveButtons(new ArrayList<>()); // Установка пустого списка
             Toast.makeText(this, "Все кнопки очищены", Toast.LENGTH_SHORT).show();
             return true;
         }
+
+        // В случае, если пункт меню не был обработан, передаем управление в родительский метод
         return super.onOptionsItemSelected(item);
     }
 }
