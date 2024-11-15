@@ -11,22 +11,27 @@ import java.util.concurrent.CompletableFuture;
 
 public class SoundRepository {
 
-    private static final String SOUNDS_COLLECTION = "sounds";
     private final CollectionReference soundsCollection;
 
+    // Конструктор, который принимает ссылку на коллекцию звуков
     public SoundRepository() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        soundsCollection = db.collection(SOUNDS_COLLECTION);
+        soundsCollection = db.collection("sounds"); // Указываем коллекцию звуков
     }
 
     // Метод для сохранения звука
     public CompletableFuture<Boolean> saveSound(Sound sound) {
         CompletableFuture<Boolean> future = new CompletableFuture<>();
 
-        soundsCollection.document(sound.id)
-                .set(sound)
-                .addOnSuccessListener(aVoid -> future.complete(true))
-                .addOnFailureListener(future::completeExceptionally);
+        // Установка ID для звука, если его нет
+        if (sound.getId() == null) {
+            sound.setId(soundsCollection.document().getId());
+        }
+
+        soundsCollection.document(sound.getId())
+                .set(sound) // Сохраняем объект sound в Firestore
+                .addOnSuccessListener(aVoid -> future.complete(true))  // Если успешно
+                .addOnFailureListener(future::completeExceptionally);  // Если ошибка
 
         return future;
     }
@@ -74,8 +79,8 @@ public class SoundRepository {
 
         soundsCollection.document(soundId)
                 .delete()
-                .addOnSuccessListener(aVoid -> future.complete(true))
-                .addOnFailureListener(future::completeExceptionally);
+                .addOnSuccessListener(aVoid -> future.complete(true))  // Если успешно
+                .addOnFailureListener(future::completeExceptionally);  // Если ошибка
 
         return future;
     }

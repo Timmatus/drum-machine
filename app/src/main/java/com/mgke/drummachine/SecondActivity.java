@@ -1,6 +1,7 @@
 package com.mgke.drummachine;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -11,6 +12,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.GridView;
 import android.widget.LinearLayout;
+import android.app.AlertDialog;
+import android.widget.EditText;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -19,7 +22,6 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import android.media.MediaRecorder;
 import android.os.Build;
-import android.os.Environment;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
@@ -53,6 +55,8 @@ public class SecondActivity extends AppCompatActivity {
     private SoundRepository soundRepository;
     private CloudinaryUploadSound cloudinaryUploadSound;
     private Uri soundUri;
+    private String userId;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,8 +66,13 @@ public class SecondActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         soundRepository = new SoundRepository();
         cloudinaryUploadSound = new CloudinaryUploadSound(this);
+
+        SharedPreferences sharedPreferences = getSharedPreferences("userPrefs", MODE_PRIVATE);
+//      userId = sharedPreferences.getString("userID", "default_user_id");
+        userId = getUserIdFromPreferences();
 
         // Инициализация массива MediaPlayer
         mediaPlayers = new MediaPlayer[6];
@@ -149,6 +158,11 @@ public class SecondActivity extends AppCompatActivity {
         handler.post(highlightRunnable);
     }
 
+    private String getUserIdFromPreferences() {
+        SharedPreferences prefs = getSharedPreferences("UserSession", MODE_PRIVATE);
+        return prefs.getString("userId", null);
+    }
+
     private void uploadSoundToCloudinary(Uri soundUri, String soundName) {
         cloudinaryUploadSound.uploadSound(soundUri, soundName, new CloudinaryUploadSound.UploadCallback() {
             @Override
@@ -168,6 +182,7 @@ public class SecondActivity extends AppCompatActivity {
         Sound sound = new Sound();
         sound.setSoundName(soundName);
         sound.setSoundUrl(soundUrl);
+        sound.setUserID(userId);
 
         soundRepository.saveSound(sound).thenAccept(success -> {
             if (success) {
@@ -261,7 +276,7 @@ public class SecondActivity extends AppCompatActivity {
             mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
             mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
 
-            String recordingFilePath = getExternalCacheDir().getAbsolutePath() + "/" + UUID.randomUUID().toString() + ".mp4";
+            recordingFilePath = getExternalCacheDir().getAbsolutePath() + "/" + UUID.randomUUID().toString() + ".mp4";
             mediaRecorder.setOutputFile(recordingFilePath);
 
             mediaRecorder.prepare();
@@ -273,6 +288,7 @@ public class SecondActivity extends AppCompatActivity {
             Toast.makeText(this, "Recording failed", Toast.LENGTH_SHORT).show();
         }
     }
+
 
     // Метод для паузы записи
     private void pauseRecording() {
@@ -297,15 +313,48 @@ public class SecondActivity extends AppCompatActivity {
             mediaRecorder.release();
             mediaRecorder = null;
             isRecordingPaused = false;
-
-            // Запуск загрузки файла на Cloudinary
-            File recordedFile = new File(recordingFilePath);
-            Uri soundUri = Uri.fromFile(recordedFile);
-            uploadSoundToCloudinary(soundUri, "recorded_sound_" + UUID.randomUUID().toString());
-
-            Toast.makeText(this, "Recording saved and uploading...", Toast.LENGTH_LONG).show();
+            if (recordingFilePath != null) {
+                File recordedFile = new File(recordingFilePath);
+                if (recordedFile.exists()) {
+                    Uri soundUri = Uri.fromFile(recordedFile);
+                    showNameInputDialog(soundUri);
+                    Toast.makeText(this, "Recording saved and uploading...", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(this, "Recorded file does not exist", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                Toast.makeText(this, "Recording file path is null", Toast.LENGTH_SHORT).show();
+            }
         }
     }
+
+    private void showNameInputDialog(Uri soundUri) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Введите название мелодии для сохранения");
+
+        // Создаем EditText для ввода имени звука
+        final EditText input = new EditText(this);
+        input.setHint("Название мелодии");
+        builder.setView(input);
+
+        // Кнопка "Сохранить"
+        builder.setPositiveButton("Сохранить", (dialog, which) -> {
+            String soundName = input.getText().toString().trim();
+            if (!soundName.isEmpty()) {
+                uploadSoundToCloudinary(soundUri, soundName);
+                Toast.makeText(this, "Recording saved and uploading...", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(this, "Имя не может быть пустым", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        // Кнопка "Отмена"
+        builder.setNegativeButton("Отмена", (dialog, which) -> dialog.cancel());
+
+        // Показать диалоговое окно
+        builder.show();
+    }
+
 
     // Запрос разрешений на запись звука
     private void requestPermissions() {
@@ -364,7 +413,7 @@ public class SecondActivity extends AppCompatActivity {
 
         if (id == R.id.action_edit) {
             // Переход на MainActivity
-            Intent intent = new Intent(this, MainActivity.class);
+            Intent intent = new Intent(this, UserProfileActivity.class);
             startActivity(intent);
             return true;
         } else if (id == R.id.action_record) {

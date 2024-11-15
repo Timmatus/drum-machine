@@ -28,6 +28,7 @@ public class UserProfileActivity extends AppCompatActivity {
     private String userId;
     private ActivityResultLauncher<Intent> imagePickerLauncher;
     private CloudinaryUploadImage cloudinaryUploadImage;
+    private Button userSoundsButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +42,13 @@ public class UserProfileActivity extends AppCompatActivity {
         cloudinaryUploadImage = new CloudinaryUploadImage(this);
 
         userId = getUserIdFromPreferences();
+        Button userSoundsButton = findViewById(R.id.user_sounds_button);
+
+        userSoundsButton.setOnClickListener(view -> {
+            Intent intent = new Intent(UserProfileActivity.this, UserSoundsActivity.class);
+            startActivity(intent);
+        });
+
 
         if (userId != null) {
             loadUserProfile(userId);
@@ -64,6 +72,11 @@ public class UserProfileActivity extends AppCompatActivity {
 
         drumPadButton.setOnClickListener(view -> {
             Intent intent = new Intent(UserProfileActivity.this, SecondActivity.class);
+            startActivity(intent);
+        });
+        Button searchUsersButton = findViewById(R.id.search_users_button);
+        searchUsersButton.setOnClickListener(view -> {
+            Intent intent = new Intent(UserProfileActivity.this, SearchUsersActivity.class);
             startActivity(intent);
         });
     }

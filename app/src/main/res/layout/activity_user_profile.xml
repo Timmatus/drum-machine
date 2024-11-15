@@ -38,6 +38,22 @@
         android:layout_height="wrap_content"
         android:drawableLeft="@drawable/drum_icc"
         android:text="Drum Pad"/>
+        <Button
+            android:id="@+id/user_sounds_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Звуки пользователя"
+            android:layout_marginTop="16dp"
+            android:drawableLeft="@drawable/baseline_library_music_24"
+            />
+        <Button
+            android:id="@+id/search_users_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Поиск пользователей"
+            android:layout_marginTop="16dp"
+            android:drawableLeft="@drawable/ic_searchh" />
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
