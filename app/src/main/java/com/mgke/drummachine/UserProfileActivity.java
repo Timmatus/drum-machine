@@ -35,6 +35,7 @@ public class UserProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
 
+        Button searchUsersButton = findViewById(R.id.search_users_button);
         Button drumPadButton = findViewById(R.id.drum_pad);
         userName = findViewById(R.id.user_name);
         avatarImageView = findViewById(R.id.user_avatar);
@@ -74,7 +75,7 @@ public class UserProfileActivity extends AppCompatActivity {
             Intent intent = new Intent(UserProfileActivity.this, SecondActivity.class);
             startActivity(intent);
         });
-        Button searchUsersButton = findViewById(R.id.search_users_button);
+
         searchUsersButton.setOnClickListener(view -> {
             Intent intent = new Intent(UserProfileActivity.this, SearchUsersActivity.class);
             startActivity(intent);
@@ -130,5 +131,11 @@ public class UserProfileActivity extends AppCompatActivity {
                     }
                 })
                 .addOnFailureListener(e -> userName.setText("Ошибка загрузки профиля"));
+    }
+    @Override
+    public void onBackPressed() {
+        // Оставьте пустым, чтобы ничего не делать при нажатии кнопки Назад
+        // super.onBackPressed(); // Не вызывайте суперкласс, чтобы отключить стандартное поведение
+
     }
 }

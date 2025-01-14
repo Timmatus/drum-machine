@@ -1,7 +1,7 @@
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:padding="16dp">
 
@@ -9,7 +9,7 @@
         android:id="@+id/other_user_avatar"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:src="@drawable/ic_default_avatar"
+        android:src="@drawable/ic_default_avat"
         android:scaleType="centerCrop"
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="16dp" />
@@ -27,11 +27,15 @@
         android:id="@+id/follow_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Добавить в отслеживаемые"
+        android:text="Подписаться"
         android:layout_marginBottom="16dp" />
 
-    <RecyclerView
+
+    <androidx.recyclerview.widget.RecyclerView
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         android:id="@+id/sounds_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
+
 </LinearLayout>

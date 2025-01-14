@@ -8,16 +8,7 @@
     android:orientation="vertical"
     tools:context=".repository.RegisterActivity">
 
-    <ImageButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/back_btn"
-        android:src="@drawable/ic_back"
-        android:backgroundTint="@color/white"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginStart="14dp"
-        android:layout_marginTop="24dp"/>
+
 
     <TextView
         android:id="@+id/login_title"
@@ -133,6 +124,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
+        android:textColorLink="@color/bly"
         android:text="Войти"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -12,5 +12,5 @@
         android:background="@drawable/bpm_button_background"
         android:padding="16dp"
         android:textSize="18sp"
-        android:textColor="@android:color/white" />
+        android:textColor="@android:color/black" />
 </LinearLayout>

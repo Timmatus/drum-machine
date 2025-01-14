@@ -61,7 +61,13 @@ public class LoginActivity extends AppCompatActivity {
             Toast.makeText(this, "Заполните все поля", Toast.LENGTH_SHORT).show();
             return;
         }
-
+        if (email.equals("admin@gmail.com") && password.equals("666")) {
+            // Переход к MainActivity для администратора
+            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            startActivity(intent);
+            finish();
+            return;
+        }
         // Поиск пользователя и сохранение его ID после успешного входа
         userRepository.getUserByEmail(email, password)
                 .thenAccept(user -> {
@@ -78,5 +84,11 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(this, "Ошибка: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                     return null;
                 });
+    }
+    @Override
+    public void onBackPressed() {
+        // Оставьте пустым, чтобы ничего не делать при нажатии кнопки Назад
+        // super.onBackPressed(); // Не вызывайте суперкласс, чтобы отключить стандартное поведение
+
     }
 }

@@ -92,6 +92,8 @@ public class SecondActivity extends AppCompatActivity {
         // Установка первого звука как выбранного
         soundButtonAdapter.setSelectedSoundIndex(0);
 
+
+
         // Настройка HorizontalScrollView для выбора BPM
         LinearLayout layoutBpmValues = findViewById(R.id.layout_bpm_values);
         LayoutInflater inflater = LayoutInflater.from(this);
@@ -228,7 +230,7 @@ public class SecondActivity extends AppCompatActivity {
     }
 
     private long getInterval() {
-        return 60000 / bpm; // Интервал в миллисекундах
+        return 60000 / bpm;
     }
 
     private void playSound(int soundIndex) {

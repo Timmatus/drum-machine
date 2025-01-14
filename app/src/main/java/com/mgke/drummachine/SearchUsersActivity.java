@@ -36,7 +36,11 @@ public class SearchUsersActivity extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance();
 
-        usersAdapter = new UsersAdapter(new ArrayList<>());
+        usersAdapter = new UsersAdapter(new ArrayList<>(), user -> {
+            Intent intent = new Intent(SearchUsersActivity.this, OtherUserProfileActivity.class);
+            intent.putExtra("userId", user.getId());
+            startActivity(intent);
+        });
         usersRecyclerView.setAdapter(usersAdapter);
 
         searchInput.addTextChangedListener(new TextWatcher() {
@@ -56,11 +60,7 @@ public class SearchUsersActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable editable) {}
         });
-        usersAdapter = new UsersAdapter(new ArrayList<>(), user -> {
-            Intent intent = new Intent(SearchUsersActivity.this, OtherUserProfileActivity.class);
-            intent.putExtra("userId", user.getUserId());  // Передаем ID пользователя
-            startActivity(intent);
-        });
+
     }
 
     private void searchUsers(String username) {

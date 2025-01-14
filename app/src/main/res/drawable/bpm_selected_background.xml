@@ -3,6 +3,6 @@
     <solid android:color="@android:color/transparent" /> <!-- Прозрачный фон -->
     <stroke
         android:width="2dp"
-        android:color="@android:color/white" /> <!-- Белая рамка -->
+        android:color="@android:color/black" /> <!-- Белая рамка -->
     <corners android:radius="4dp" /> <!-- Закругленные углы -->
 </shape>

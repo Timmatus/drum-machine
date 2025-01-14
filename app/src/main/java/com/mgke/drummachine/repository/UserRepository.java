@@ -1,6 +1,7 @@
 package com.mgke.drummachine.repository;
 
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.mgke.drummachine.model.User;
 
@@ -46,4 +47,47 @@ public class UserRepository {
 
         return future;
     }
+    public CompletableFuture<Void> addToFollowedUsers(String userId) {
+        CompletableFuture<Void> future = new CompletableFuture<>();
+
+        // Получить текущего пользователя (замените на реальный метод получения userId текущего пользователя)
+        String currentUserId = "current_user_id";
+
+        userCollection.document(currentUserId)
+                .update("followedUsers", FieldValue.arrayUnion(userId))
+                .addOnSuccessListener(aVoid -> future.complete(null))
+                .addOnFailureListener(future::completeExceptionally);
+
+        return future;
+    }
+    public CompletableFuture<Boolean> isUserUnique(String username, String email) {
+        CompletableFuture<Boolean> future = new CompletableFuture<>();
+
+        // Проверка уникальности почты
+        userCollection.whereEqualTo("mail", email).get()
+                .addOnSuccessListener(querySnapshot -> {
+                    if (!querySnapshot.isEmpty()) {
+                        // Почта уже существует
+                        future.complete(false);
+                        return;
+                    }
+
+                    // Проверка уникальности логина
+                    userCollection.whereEqualTo("username", username).get()
+                            .addOnSuccessListener(querySnapshot2 -> {
+                                if (!querySnapshot2.isEmpty()) {
+                                    // Логин уже существует
+                                    future.complete(false);
+                                } else {
+                                    // Почта и логин уникальны
+                                    future.complete(true);
+                                }
+                            })
+                            .addOnFailureListener(future::completeExceptionally);
+                })
+                .addOnFailureListener(future::completeExceptionally);
+
+        return future;
+    }
+
 }

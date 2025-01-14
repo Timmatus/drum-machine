@@ -1,0 +1,65 @@
+@startuml
+
+package com.mgke.drummachine {
+
+    class UserProfileActivity {
+        - String userId
+        + onCreate(Bundle savedInstanceState)
+        + onClickImage()
+        + onBackPressed()
+    }
+
+    class SecondActivity {
+        - String userId
+        + onCreate(Bundle savedInstanceState)
+        + startRecording()
+        + stopRecording()
+        + onBackPressed()
+    }
+
+    class RegisterActivity {
+        - UserRepository userRepository
+        + onCreate(Bundle savedInstanceState)
+        + onClickRegistration(View view)
+        + onBackPressed()
+    }
+
+    class UserRepository {
+        + isUserUnique(String name, String email) : CompletableFuture<Boolean>
+        + addUser(String name, String email, String password) : CompletableFuture<Boolean>
+        + getUserByEmail(String email, String password) : CompletableFuture<User>
+    }
+
+    class User {
+        + String id
+        + String username
+    }
+
+    class FirebaseFirestore {
+        + getInstance() : FirebaseFirestore
+        + collection(String) : CollectionReference
+    }
+
+    class CloudinaryUploadImage {
+        + uploadImage(Uri imageUri, String userId, UploadCallback callback)
+    }
+
+    class CollectionReference {
+        + document(String) : DocumentReference
+    }
+
+    class DocumentReference {
+        + get() : Task<DocumentSnapshot>
+        + update(String, String) : Task<Void>
+    }
+
+    UserProfileActivity --> UserRepository
+    SecondActivity --> UserRepository
+    RegisterActivity --> UserRepository
+    UserRepository --> User
+    UserRepository --> FirebaseFirestore
+    FirebaseFirestore --> CollectionReference
+    CollectionReference --> DocumentReference
+}
+
+@enduml

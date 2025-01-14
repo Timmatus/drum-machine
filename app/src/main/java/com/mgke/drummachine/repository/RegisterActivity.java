@@ -64,34 +64,52 @@
                 Toast.makeText(this, "Заполните все поля", Toast.LENGTH_SHORT).show();
                 return;
             }
+            if (password.length() < 8 || !Pattern.compile("[^a-zA-Z0-9]").matcher(password).find()) {
+                Toast.makeText(this, "Пароль должен быть не менее 8 символов и содержать хотя бы один специальный символ", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            // Проверка уникальности почты и логина
+            userRepository.isUserUnique(name, email).thenAccept(isUnique -> {
+                if (isUnique) {
+                    // Почта и логин уникальны, регистрируем пользователя
+                    userRepository.addUser(name, email, password).thenAccept(result -> {
+                        if (result) {
+                            userRepository.getUserByEmail(email, password).thenAccept(user -> {
+                                if (user != null) {
+                                    saveUserId(user.id);
 
-            // Регистрация пользователя
-            userRepository.addUser(name, email, password).thenAccept(result -> {
-                if (result) {
-                    // Дожидаемся получения ID пользователя и сохраняем его, прежде чем запускать новый экран
-                    userRepository.getUserByEmail(email, password).thenAccept(user -> {
-                        if (user != null) {
-                            saveUserId(user.id);
-
-                            // Переход на UserProfileActivity только после успешного сохранения userId
-                            Intent intent = new Intent(RegisterActivity.this, UserProfileActivity.class);
-                            startActivity(intent);
-                            finish();
+                                    Intent intent = new Intent(RegisterActivity.this, UserProfileActivity.class);
+                                    startActivity(intent);
+                                    finish();
+                                } else {
+                                    Toast.makeText(this, "Ошибка при получении данных пользователя", Toast.LENGTH_SHORT).show();
+                                }
+                            }).exceptionally(e -> {
+                                Toast.makeText(this, "Ошибка: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                return null;
+                            });
                         } else {
-                            Toast.makeText(this, "Ошибка при получении данных пользователя", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(this, "Ошибка регистрации", Toast.LENGTH_SHORT).show();
                         }
                     }).exceptionally(e -> {
                         Toast.makeText(this, "Ошибка: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                         return null;
                     });
-
                 } else {
-                    Toast.makeText(this, "Ошибка регистрации", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Почта или логин уже используются", Toast.LENGTH_SHORT).show();
                 }
             }).exceptionally(e -> {
-                Toast.makeText(this, "Ошибка: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Ошибка проверки уникальности: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                 return null;
             });
         }
+        @Override
+        public void onBackPressed() {
+            // Оставьте пустым, чтобы ничего не делать при нажатии кнопки Назад
+            // super.onBackPressed(); // Не вызывайте суперкласс, чтобы отключить стандартное поведение
+
+        }
+
+
 
     }
