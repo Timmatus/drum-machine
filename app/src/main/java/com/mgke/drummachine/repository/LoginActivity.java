@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,6 +25,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText emailEditText, passwordEditText;
     private Button loginButton;
     private TextView registerBtn;
+    private CheckBox rememberMeCheсkbox;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +35,8 @@ public class LoginActivity extends AppCompatActivity {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         userRepository = new UserRepository(db.collection("users"));
 
+
+//        rememberMeCheсkbox = findViewById(R.id.remember_me_checkbox);
         emailEditText = findViewById(R.id.email_et);
         passwordEditText = findViewById(R.id.password_et);
         loginButton = findViewById(R.id.login_btn);
@@ -43,7 +47,6 @@ public class LoginActivity extends AppCompatActivity {
             Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
             startActivity(intent);
         });
-
     }
 
     private void saveUserId(String userId) {
@@ -71,8 +74,24 @@ public class LoginActivity extends AppCompatActivity {
         // Поиск пользователя и сохранение его ID после успешного входа
         userRepository.getUserByEmail(email, password)
                 .thenAccept(user -> {
+
                     if (user != null) {
                         saveUserId(user.id); // Сохранение ID пользователя
+                        SharedPreferences prefs = getSharedPreferences("UserSession", MODE_PRIVATE);
+                        String savedUserId = prefs.getString("userId", null);
+//                        if (rememberMeCheсkbox.isChecked()) {
+//                            SharedPreferences.Editor editor = prefs.edit();
+//                            editor.putString("userId", user.id);
+//                            editor.apply();
+//                        }
+
+                        if (savedUserId != null) {
+                            // Если userId сохранен, сразу авторизуем пользователя
+                            Intent intent = new Intent(LoginActivity.this, UserProfileActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }
+
                         Intent intent = new Intent(LoginActivity.this, UserProfileActivity.class);
                         startActivity(intent);
                         finish();
@@ -87,8 +106,6 @@ public class LoginActivity extends AppCompatActivity {
     }
     @Override
     public void onBackPressed() {
-        // Оставьте пустым, чтобы ничего не делать при нажатии кнопки Назад
-        // super.onBackPressed(); // Не вызывайте суперкласс, чтобы отключить стандартное поведение
 
     }
 }

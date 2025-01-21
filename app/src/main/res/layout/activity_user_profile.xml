@@ -53,6 +53,20 @@
             android:text="Поиск пользователей"
             android:layout_marginTop="16dp"
             android:drawableLeft="@drawable/ic_searchh" />
+        <Button
+            android:id="@+id/subscriptions_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Подписки"
+            android:layout_marginTop="16dp"
+            android:drawableLeft="@drawable/ic_subscriptions2" />
+        <Button
+            android:id="@+id/logout_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Выйти из аккаунта"
+            android:layout_marginTop="16dp"
+            android:drawableLeft="@drawable/ic_logout" />
 
     </LinearLayout>
 

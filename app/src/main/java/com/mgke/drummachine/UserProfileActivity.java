@@ -18,6 +18,7 @@ import android.provider.MediaStore;
 import com.bumptech.glide.Glide;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.mgke.drummachine.model.User;
+import com.mgke.drummachine.repository.LoginActivity;
 import com.mgke.drummachine.repository.UserRepository;
 
 public class UserProfileActivity extends AppCompatActivity {
@@ -35,6 +36,8 @@ public class UserProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
 
+        Button logoutButton = findViewById(R.id.logout_button);
+        Button subscriptionsButton = findViewById(R.id.subscriptions_button);
         Button searchUsersButton = findViewById(R.id.search_users_button);
         Button drumPadButton = findViewById(R.id.drum_pad);
         userName = findViewById(R.id.user_name);
@@ -79,6 +82,14 @@ public class UserProfileActivity extends AppCompatActivity {
         searchUsersButton.setOnClickListener(view -> {
             Intent intent = new Intent(UserProfileActivity.this, SearchUsersActivity.class);
             startActivity(intent);
+        });
+
+        subscriptionsButton.setOnClickListener(view -> {
+            Intent intent = new Intent(UserProfileActivity.this, SubscriptionsActivity.class);
+            startActivity(intent);
+        });
+        logoutButton.setOnClickListener(view -> {
+            logout();
         });
     }
 
@@ -132,6 +143,22 @@ public class UserProfileActivity extends AppCompatActivity {
                 })
                 .addOnFailureListener(e -> userName.setText("Ошибка загрузки профиля"));
     }
+    private void logout() {
+        // Удаляем сохранённый userId из SharedPreferences
+        SharedPreferences prefs = getSharedPreferences("UserSession", MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.remove("userId");
+        editor.apply();
+
+        // Переход на экран входа
+        Intent intent = new Intent(UserProfileActivity.this, LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+
+        // Показываем сообщение
+        Toast.makeText(this, "Вы вышли из аккаунта", Toast.LENGTH_SHORT).show();
+    }
+
     @Override
     public void onBackPressed() {
         // Оставьте пустым, чтобы ничего не делать при нажатии кнопки Назад

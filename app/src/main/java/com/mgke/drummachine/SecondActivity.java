@@ -65,6 +65,7 @@ public class SecondActivity extends AppCompatActivity {
         requestPermissions();
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         soundRepository = new SoundRepository();
@@ -413,12 +414,13 @@ public class SecondActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.action_edit) {
-            // Переход на MainActivity
-            Intent intent = new Intent(this, UserProfileActivity.class);
-            startActivity(intent);
+        if (id == android.R.id.home) {
+            // Возврат на предыдущую страницу
+            onBackPressed(); // Завершение текущей активности
             return true;
-        } else if (id == R.id.action_record) {
+        }
+
+        if (id == R.id.action_record) {
             startRecording();
             return true;
         } else if (id == R.id.action_pause) {

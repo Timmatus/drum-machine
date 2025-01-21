@@ -90,6 +90,14 @@ public class OtherUserProfileActivity extends AppCompatActivity {
                         }
                     }
                 });
+        subscriptionRepository.isUserSubscribed(this.userId, userId)
+                .thenAccept(isSubscribed -> {
+                    runOnUiThread(() -> followButton.setText(isSubscribed ? "Отписаться" : "Подписаться"));
+                })
+                .exceptionally(e -> {
+                    runOnUiThread(() -> Toast.makeText(this, "Ошибка проверки подписки", Toast.LENGTH_SHORT).show());
+                    return null;
+                });
     }
 
     private void loadUserSounds(String otherUserId) {
@@ -115,8 +123,7 @@ public class OtherUserProfileActivity extends AppCompatActivity {
         soundAdapter.updateSounds(sounds); // Обновляем список звуков в адаптере
     }
 
-        private void followUser(String userIdToFollow) {
-
+    private void followUser(String userIdToFollow) {
         if (userId == null) {
             Toast.makeText(this, "Пользователь не авторизован", Toast.LENGTH_SHORT).show();
             return;
@@ -124,20 +131,38 @@ public class OtherUserProfileActivity extends AppCompatActivity {
 
         subscriptionRepository.isUserSubscribed(userId, userIdToFollow)
                 .thenAccept(isSubscribed -> {
-                    if (!isSubscribed) {
-                        // Если еще не подписан, создаем подписку
-                        subscriptionRepository.createSubscription(userId, userIdToFollow)
-                                .thenAccept(aVoid -> Toast.makeText(this, "Вы подписались на пользователя", Toast.LENGTH_SHORT).show())
+                    if (isSubscribed) {
+                        // Если подписка существует, отменяем ее
+                        subscriptionRepository.deleteSubscription(userId, userIdToFollow)
+                                .thenAccept(aVoid -> {
+                                    runOnUiThread(() -> {
+                                        followButton.setText("Подписаться");
+                                        followButton.setBackgroundColor(getResources().getColor(R.color.bly));
+                                        Toast.makeText(this, "Подписка отменена", Toast.LENGTH_SHORT).show();
+                                    });
+                                })
                                 .exceptionally(e -> {
-                                    Toast.makeText(this, "Ошибка при подписке", Toast.LENGTH_SHORT).show();
+                                    runOnUiThread(() -> Toast.makeText(this, "Ошибка отмены подписки", Toast.LENGTH_SHORT).show());
                                     return null;
                                 });
                     } else {
-                        Toast.makeText(this, "Вы уже подписаны на этого пользователя", Toast.LENGTH_SHORT).show();
+                        // Если подписки нет, создаем ее
+                        subscriptionRepository.createSubscription(userId, userIdToFollow)
+                                .thenAccept(aVoid -> {
+                                    runOnUiThread(() -> {
+                                        followButton.setText("Отписаться");
+                                        followButton.setBackgroundColor(getResources().getColor(R.color.black));
+                                        Toast.makeText(this, "Вы подписались на пользователя", Toast.LENGTH_SHORT).show();
+                                    });
+                                })
+                                .exceptionally(e -> {
+                                    runOnUiThread(() -> Toast.makeText(this, "Ошибка при подписке", Toast.LENGTH_SHORT).show());
+                                    return null;
+                                });
                     }
                 })
                 .exceptionally(e -> {
-                    Toast.makeText(this, "Ошибка проверки подписки", Toast.LENGTH_SHORT).show();
+                    runOnUiThread(() -> Toast.makeText(this, "Ошибка проверки подписки", Toast.LENGTH_SHORT).show());
                     return null;
                 });
     }
