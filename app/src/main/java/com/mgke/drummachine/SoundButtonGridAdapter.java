@@ -43,10 +43,7 @@ public class SoundButtonGridAdapter extends BaseAdapter {
         Button button;
         if (convertView == null) {
             button = new Button(context);
-            button.setLayoutParams(new ViewGroup.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT
-            ));
+            button.setLayoutParams(new ViewGroup.LayoutParams(250, 250));
         } else {
             button = (Button) convertView;
         }

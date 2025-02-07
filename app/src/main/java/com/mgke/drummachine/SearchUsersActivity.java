@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -42,7 +43,12 @@ public class SearchUsersActivity extends AppCompatActivity {
             startActivity(intent);
         });
         usersRecyclerView.setAdapter(usersAdapter);
-
+        Button btnBackToMain = findViewById(R.id.btn_back_to_main);
+        btnBackToMain.setOnClickListener(v -> {
+            Intent intent = new Intent(SearchUsersActivity.this, UserProfileActivity.class);
+            startActivity(intent);
+            finish(); // Закрывает активность и возвращает в предыдущее окно (главное меню)
+        });
         searchInput.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}

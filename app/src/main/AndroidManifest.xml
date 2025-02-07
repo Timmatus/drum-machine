@@ -13,8 +13,13 @@
         android:label="Drum Pad"
         android:roundIcon="@mipmap/ic_dpad"
         android:supportsRtl="true"
+        android:background="@drawable/gradient_background"
         android:theme="@style/Theme.DrumMachine"
+
         tools:targetApi="31">
+        <activity
+            android:name=".LikedSoundsActivity"
+            android:exported="false" />
         <activity
             android:name=".SubscriptionsActivity"
             android:exported="false" />
@@ -32,18 +37,16 @@
             android:exported="false" />
         <activity
             android:name=".repository.LoginActivity"
-            android:exported="true" >
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".repository.RegisterActivity"
-            android:exported="true">
-
-        </activity>
+            android:exported="true"></activity>
         <activity
             android:name=".SecondActivity"
             android:exported="false" />

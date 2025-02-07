@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@drawable/gradient_background"
     android:padding="16dp">
 
     <EditText
@@ -17,6 +18,16 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/users_recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="8dp" />
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        android:layout_weight="1" />
+
+    <Button
+        android:id="@+id/btn_back_to_main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Вернуться в главное меню"
+        android:backgroundTint="@color/KRASAVCHIK"
+        android:layout_marginTop="16dp" />
+
 </LinearLayout>

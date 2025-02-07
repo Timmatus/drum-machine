@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Основной фон кнопки -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="#FF00FF00" /> <!-- Зеленый цвет -->
+            <corners android:radius="4dp" />
+        </shape>
+    </item>
+    <!-- Кружок в правом верхнем углу -->
+    <item
+        android:right="8dp"
+        android:top="8dp">
+        <bitmap
+            android:src="@drawable/circle_indicator"
+            android:gravity="right|top" />
+    </item>
+</layer-list>

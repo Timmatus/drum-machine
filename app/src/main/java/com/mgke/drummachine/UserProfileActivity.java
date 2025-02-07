@@ -40,6 +40,7 @@ public class UserProfileActivity extends AppCompatActivity {
         Button subscriptionsButton = findViewById(R.id.subscriptions_button);
         Button searchUsersButton = findViewById(R.id.search_users_button);
         Button drumPadButton = findViewById(R.id.drum_pad);
+        Button likedSound = findViewById(R.id.liked_sounds_button);
         userName = findViewById(R.id.user_name);
         avatarImageView = findViewById(R.id.user_avatar);
         db = FirebaseFirestore.getInstance();
@@ -81,6 +82,11 @@ public class UserProfileActivity extends AppCompatActivity {
 
         searchUsersButton.setOnClickListener(view -> {
             Intent intent = new Intent(UserProfileActivity.this, SearchUsersActivity.class);
+            startActivity(intent);
+        });
+
+        likedSound.setOnClickListener(v -> {
+            Intent intent = new Intent(UserProfileActivity.this, LikedSoundsActivity.class);
             startActivity(intent);
         });
 

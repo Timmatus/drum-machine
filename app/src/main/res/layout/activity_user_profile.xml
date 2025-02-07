@@ -2,26 +2,23 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/gradient_background"
     tools:context=".UserProfileActivity">
-    <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:gravity="center_horizontal"
-        android:padding="16dp">
+
+    <!-- Аватар пользователя -->
     <ImageView
         android:id="@+id/user_avatar"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
         android:src="@drawable/ic_default_avat"
         android:contentDescription="User Avatar"
         android:scaleType="centerCrop"
-        android:layout_marginBottom="16dp"
-        />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="80dp"/>
 
     <!-- Имя пользователя -->
     <TextView
@@ -29,45 +26,115 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Имя пользователя"
-        android:textSize="18sp"
-        android:textColor="#000000"
-        android:layout_marginTop="8dp" />
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="#2A3A4C"
+        android:gravity="center"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@id/user_avatar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Кнопка Drum Pad -->
     <Button
         android:id="@+id/drum_pad"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:text="Drum Pad"
+        android:textStyle="bold"
+        android:textColor="#000000"
+        android:backgroundTint="@color/KRASAVCHIK"
         android:drawableLeft="@drawable/drum_icc"
-        android:text="Drum Pad"/>
-        <Button
-            android:id="@+id/user_sounds_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Звуки пользователя"
-            android:layout_marginTop="16dp"
-            android:drawableLeft="@drawable/baseline_library_music_24"
-            />
-        <Button
-            android:id="@+id/search_users_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Поиск пользователей"
-            android:layout_marginTop="16dp"
-            android:drawableLeft="@drawable/ic_searchh" />
-        <Button
-            android:id="@+id/subscriptions_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Подписки"
-            android:layout_marginTop="16dp"
-            android:drawableLeft="@drawable/ic_subscriptions2" />
-        <Button
-            android:id="@+id/logout_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Выйти из аккаунта"
-            android:layout_marginTop="16dp"
-            android:drawableLeft="@drawable/ic_logout" />
+        android:paddingVertical="12dp"
+        android:layout_marginTop="30dp"
+        app:layout_constraintTop_toBottomOf="@id/user_name"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintWidth_percent="0.8"/>
 
-    </LinearLayout>
+    <!-- Кнопка Звуки пользователя -->
+    <Button
+        android:id="@+id/user_sounds_button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Звуки пользователя"
+        android:textStyle="bold"
+        android:textColor="#000000"
+        android:backgroundTint="@color/KRASAVCHIK"
+        android:drawableLeft="@drawable/baseline_library_music_24"
+        android:paddingVertical="12dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@id/drum_pad"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintWidth_percent="0.8"/>
+
+    <!-- Кнопка Поиск пользователей -->
+    <Button
+        android:id="@+id/search_users_button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Поиск пользователей"
+        android:textStyle="bold"
+        android:textColor="#000000"
+        android:backgroundTint="@color/KRASAVCHIK"
+        android:drawableLeft="@drawable/ic_searchh"
+        android:paddingVertical="12dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@id/user_sounds_button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintWidth_percent="0.8"/>
+
+    <!-- Кнопка Подписки -->
+    <Button
+        android:id="@+id/subscriptions_button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Подписки"
+        android:textStyle="bold"
+        android:textColor="#000000"
+        android:backgroundTint="@color/KRASAVCHIK"
+        android:drawableLeft="@drawable/ic_subscriptions3"
+        android:paddingVertical="12dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@id/search_users_button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintWidth_percent="0.8"/>
+
+    <!-- Кнопка Понравившиеся песни -->
+    <Button
+        android:id="@+id/liked_sounds_button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Понравившиеся песни"
+        android:textStyle="bold"
+        android:textColor="#000000"
+        android:backgroundTint="@color/KRASAVCHIK"
+        android:paddingVertical="12dp"
+        android:layout_marginTop="16dp"
+        android:drawableLeft="@drawable/ic_like"
+        app:layout_constraintTop_toBottomOf="@id/subscriptions_button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintWidth_percent="0.8"/>
+
+    <!-- Кнопка Выйти -->
+    <Button
+        android:id="@+id/logout_button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Выйти из аккаунта"
+        android:textStyle="bold"
+        android:textColor="#000000"
+        android:backgroundTint="@color/KRASAVCHIK"
+        android:drawableLeft="@drawable/ic_logout1"
+        android:paddingVertical="12dp"
+        android:layout_marginTop="25dp"
+        app:layout_constraintTop_toBottomOf="@id/liked_sounds_button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintWidth_percent="0.8"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

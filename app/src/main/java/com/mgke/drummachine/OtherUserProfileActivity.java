@@ -20,6 +20,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.mgke.drummachine.model.User;
 import com.mgke.drummachine.model.Sound;
+import com.mgke.drummachine.repository.LikedSoundRepository;
 import com.mgke.drummachine.repository.SoundRepository;
 import com.mgke.drummachine.repository.SubscriptionRepository;
 import com.mgke.drummachine.repository.UserRepository;
@@ -38,7 +39,9 @@ public class OtherUserProfileActivity extends AppCompatActivity {
     private FirebaseFirestore db;
     private String otherUserId, userId;
     private Button followButton;
+    private Button likeButton;
     private SubscriptionRepository subscriptionRepository;
+    private LikedSoundRepository likedSoundRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,11 +55,12 @@ public class OtherUserProfileActivity extends AppCompatActivity {
         avatarImageView = findViewById(R.id.other_user_avatar);
         userName = findViewById(R.id.other_user_name);
         followButton = findViewById(R.id.follow_button);
+
         soundsRecyclerView = findViewById(R.id.sounds_recycler_view);
         soundsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         userId = getUserIdFromPreferences();
         db = FirebaseFirestore.getInstance();
-
+        likedSoundRepository = new LikedSoundRepository();
 
 
         otherUserId = getIntent().getStringExtra("userId");

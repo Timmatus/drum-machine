@@ -1,65 +1,83 @@
 @startuml
 
-package com.mgke.drummachine {
-
-    class UserProfileActivity {
-        - String userId
-        + onCreate(Bundle savedInstanceState)
-        + onClickImage()
-        + onBackPressed()
-    }
-
-    class SecondActivity {
-        - String userId
-        + onCreate(Bundle savedInstanceState)
-        + startRecording()
-        + stopRecording()
-        + onBackPressed()
-    }
-
-    class RegisterActivity {
-        - UserRepository userRepository
-        + onCreate(Bundle savedInstanceState)
-        + onClickRegistration(View view)
-        + onBackPressed()
-    }
-
-    class UserRepository {
-        + isUserUnique(String name, String email) : CompletableFuture<Boolean>
-        + addUser(String name, String email, String password) : CompletableFuture<Boolean>
-        + getUserByEmail(String email, String password) : CompletableFuture<User>
-    }
-
-    class User {
-        + String id
-        + String username
-    }
-
-    class FirebaseFirestore {
-        + getInstance() : FirebaseFirestore
-        + collection(String) : CollectionReference
-    }
-
-    class CloudinaryUploadImage {
-        + uploadImage(Uri imageUri, String userId, UploadCallback callback)
-    }
-
-    class CollectionReference {
-        + document(String) : DocumentReference
-    }
-
-    class DocumentReference {
-        + get() : Task<DocumentSnapshot>
-        + update(String, String) : Task<Void>
-    }
-
-    UserProfileActivity --> UserRepository
-    SecondActivity --> UserRepository
-    RegisterActivity --> UserRepository
-    UserRepository --> User
-    UserRepository --> FirebaseFirestore
-    FirebaseFirestore --> CollectionReference
-    CollectionReference --> DocumentReference
+class OtherUserProfileActivity {
+    - ImageView avatarImageView
+    - TextView userName
+    - RecyclerView soundsRecyclerView
+    - SoundAdapter soundAdapter
+    - FirebaseFirestore db
+    - String otherUserId
+    - String userId
+    - Button followButton
+    - SubscriptionRepository subscriptionRepository
+    - LikedSoundRepository likedSoundRepository
+    + void onCreate(Bundle savedInstanceState)
+    + void onBackPressed()
+    + void loadUserProfile(String userId)
+    + void loadUserSounds(String otherUserId)
+    + void displaySounds(List<Sound> sounds)
+    + void followUser(String userIdToFollow)
+    + String getUserIdFromPreferences()
 }
+
+
+class UserRepository {
+    + isUserUnique(String name, String email) : CompletableFuture<Boolean>
+    + addUser(String name, String email, String password) : CompletableFuture<Boolean>
+    + getUserByEmail(String email, String password) : CompletableFuture<User>
+}
+
+
+class UserProfileActivity {
+    - TextView userName
+    - ImageView avatarImageView
+    - FirebaseFirestore db
+    - String userId
+    - ActivityResultLauncher<Intent> imagePickerLauncher
+    - CloudinaryUploadImage cloudinaryUploadImage
+    - Button userSoundsButton
+    + void onCreate(Bundle savedInstanceState)
+    + void openImagePicker()
+    + void uploadAvatar(Uri imageUri)
+    + void updateUserProfileImage(String imageUrl)
+    + String getUserIdFromPreferences()
+    + void loadUserProfile(String userId)
+    + void logout()
+    + void onBackPressed()
+}
+
+
+
+class SecondActivity {
+    - String userId
+    + onCreate(Bundle savedInstanceState)
+    + startRecording()
+    + stopRecording()
+    + onBackPressed()
+}
+
+class RegisterActivity {
+    - UserRepository userRepository
+    + onCreate(Bundle savedInstanceState)
+    + onClickRegistration(View view)
+    + onBackPressed()
+}
+
+
+
+
+
+
+
+
+OtherUserProfileActivity --> UserRepository
+UserProfileActivity --> UserRepository
+UserProfileActivity --> SecondActivity
+UserProfileActivity --> RegisterActivity
+UserProfileActivity --> OtherUserProfileActivity
+UserProfileActivity --> OtherUserProfileActivity
+UserProfileActivity --> SecondActivity
+UserProfileActivity --> RegisterActivity
+
 
 @enduml

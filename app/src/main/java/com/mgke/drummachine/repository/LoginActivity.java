@@ -64,7 +64,7 @@ public class LoginActivity extends AppCompatActivity {
             Toast.makeText(this, "Заполните все поля", Toast.LENGTH_SHORT).show();
             return;
         }
-        if (email.equals("admin@gmail.com") && password.equals("666")) {
+        if (email.equals("admin@gmail.com") && password.equals("333")) {
             // Переход к MainActivity для администратора
             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
             startActivity(intent);

@@ -2,6 +2,7 @@ package com.mgke.drummachine;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -35,7 +36,13 @@ public class SubscriptionsActivity extends AppCompatActivity {
 
         subscriptionsAdapter = new SubscriptionsAdapter(new ArrayList<>(), this::unsubscribe, this::navigateToUserProfile);
         subscriptionsRecyclerView.setAdapter(subscriptionsAdapter);
-
+        ImageButton backBtn = findViewById(R.id.back_btn);
+        backBtn.setOnClickListener(view -> {
+            // Возвращаемся на UserProfileActivity
+            Intent intent = new Intent(SubscriptionsActivity.this, UserProfileActivity.class);
+            startActivity(intent);
+            finish(); // Завершаем текущую активность
+        });
         if (userId != null) {
             loadSubscriptions();
         }
